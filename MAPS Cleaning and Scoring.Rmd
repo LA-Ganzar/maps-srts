@@ -1,7 +1,7 @@
 ---
 title: "MAPS - SRTS for STREETS Study: Cleaning and Scoring"
 author: "LAG"
-date: "Last modified 2-16-2022"
+date: "Last modified 2-28-2022"
 output: html_document
 ---
 
@@ -11,6 +11,8 @@ library(tidyverse)
 library(irr)
 library(rlang)
 library(reshape2)
+# set working directory
+setwd("/Users/leighannganzar/Desktop/Post-Doc/Projects/MAPS")
 ```
 Instructions for MAPS-SRTS Scoring Code:
 - This code is set up to handle up to 4 school access segments, 14 segments, and 10 crossings.
@@ -445,7 +447,7 @@ maps <- maps %>%
          "A1_22" = "A122",
          "A1_00Notes" = "A100Notes")
 
-# SCreate function to change prefix of variable names
+# Create function to change prefix of variable names
 change_prefix <- function(df, oldpref, newpref) {
   df %>%
        rename_at(vars(starts_with(oldpref)), funs(sub(oldpref, newpref, .)))
@@ -3012,8 +3014,9 @@ write.csv(maps_final, "streets_maps_t1.csv")
 
 ```{r 11. Inter rater reliability analyses}
 # Intraclass correlation coefficient for each individual item, single item indicators, subscales, and overall
-# format for continuous: icc(df, model="oneway", type="agreement")
-# format for categorical: kappa2(data[,c(1,2)], "unweighted")
+# Format for categorical: kappa2(data[,c(1,2)], "unweighted")
+# Format for continuous: icc(df, model="oneway", type="agreement")
+
 ```
 
 ```{r 12. Summary tables and data visualizations}
