@@ -11,19 +11,14 @@ library(tidyverse)
 library(irr)
 library(rlang)
 library(reshape2)
-# set working directory
-setwd("/Users/leighannganzar/Desktop/Post-Doc/Projects/MAPS")
+
 ```
 Instructions for MAPS-SRTS Scoring Code:
 - This code is set up to handle up to 4 school access segments, 14 segments, and 10 crossings.
 - If your data set has less than these limits, please delete or add to the scoring code blocks for school access segment scoring (# 3), segment scoring (#4), and crossing scoring (#5) to match the upper limit of these sections in your data. You can determine how many school access segments, segments, and crossings are in your data set using code block #2. 
 ```{r 1. Import data}
 # Import CSV with 1 observation per row
-maps <- read.csv("/Users/leighannganzar/Desktop/Post-Doc/Projects/MAPS/all_observations_clean_1-11-22.csv")
-
-# Filter for STREETS cohort time 1
-maps <- maps %>%
-  filter(timepoint == 1 & cohort ==1)
+maps <- read.csv("/Users/leighannganzar/Desktop/Post-Doc/Projects/MAPS/MAPS-SRTS/all_observations_clean_1-11-22.csv")
 ```
 
 ```{r For STREETS: Recode school access segment variables}
@@ -3007,15 +3002,45 @@ C_means <- C_means_all %>%
 ```
 
 ```{r 10. MEANS - Add mean scores back to main data frame and export data}
+#remove duplicate variables
 maps_with_dup <- cbind(maps_scored, A_means, S_means, C_means)
-maps_final <- maps_with_dup[!duplicated(as.list(maps_with_dup))]
-write.csv(maps_final, "streets_maps_t1.csv")
+maps_unique <- maps_with_dup[!duplicated(as.list(maps_with_dup))]
+
+# combine with STREETS school info variables
+school_info <- maps %>%
+  select(qc, cohort, timepoint, schertz, arm)
+maps_final <- cbind(school_info, maps_unique)
+
+write.csv(maps_final, "streets_maps.csv")
 ```
 
 ```{r 11. Inter rater reliability analyses}
-# Intraclass correlation coefficient for each individual item, single item indicators, subscales, and overall
-# Format for categorical: kappa2(data[,c(1,2)], "unweighted")
-# Format for continuous: icc(df, model="oneway", type="agreement")
+# IRR data set up ------------------------------------------------------------
+maps_final$SchoolID <- gsub("_QC","",maps_final$SchoolID) #remove _QC from schoolid values
+maps_qc <- maps_final %>% # Select only QC schools
+  filter(qc == 1 | qc == 2)  
+
+# ICC for school access segments ---------------------------------------------
+a_overall_icc <- maps_qc %>%
+  select(A_overall_mean, qc, SchoolID) %>%
+  pivot_wider(names_from = qc, values_from = A_overall_mean) %>%
+  select("1","2")
+icc(a_overall_icc, model = "oneway", type = "agreement")
+
+# ICC for segments -----------------------------------------------------------
+s_overall_icc <- maps_qc %>%
+  select(S_overall_mean, qc, SchoolID) %>%
+  pivot_wider(names_from = qc, values_from = S_overall_mean) %>%
+  select("1","2")
+icc(s_overall_icc, model = "oneway", type = "agreement")
+
+# ICC for crossings ----------------------------------------------------------
+c_overall_icc <- maps_qc %>%
+  select(C_overall_mean, qc, SchoolID) %>%
+  pivot_wider(names_from = qc, values_from = C_overall_mean) %>%
+  select("1","2")
+icc(c_overall_icc, model = "oneway", type = "agreement")
+
 
 ```
 
