@@ -3022,9 +3022,9 @@ maps_qc <- maps_final %>% # Select only QC schools
 
 # ICC for school access segments ---------------------------------------------
 a_overall_icc <- maps_qc %>%
-  select(A_overall_mean, qc, SchoolID) %>%
-  pivot_wider(names_from = qc, values_from = A_overall_mean) %>%
-  select("1","2")
+  select(A_overall_mean, qc, SchoolID) %>% # select variable for ICC, plus qc and schoolid grouping variable
+  pivot_wider(names_from = qc, values_from = A_overall_mean) %>% # make data wide
+  select("1","2") # remove schoolid
 icc(a_overall_icc, model = "oneway", type = "agreement")
 
 # ICC for segments -----------------------------------------------------------
