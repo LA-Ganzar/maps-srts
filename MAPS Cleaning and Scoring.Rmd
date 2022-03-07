@@ -3014,6 +3014,189 @@ maps_final <- cbind(school_info, maps_unique)
 write.csv(maps_final, "streets_maps.csv")
 ```
 
+```{r SUMS - create function}
+# create function for row means by subscale 
+subscale_sum <- function(df, section, subscale, var_name)  {
+    df %>%
+      select(starts_with(section) & ends_with(subscale)) %>%
+      mutate(!!quo_name(var_name) := rowSums(., na.rm = TRUE))
+}
+```
+
+```{r SUMS - Scoring for school access segment scores}
+# school access segments subscale sums
+A_calming_pos_sum <- subscale_sum(maps_scored, "A", "calming_pos","A_calming_pos_sum")
+A_lights_pos_sum <- subscale_sum(maps_scored, "A", "lights_pos","A_lights_pos_sum")
+A_driveways_pos_sum <- subscale_sum(maps_scored, "A", "driveways_pos","A_driveways_pos_sum")
+A_speed_dichot_sum <- subscale_sum(maps_scored, "A", "speed_dichot","A_speed_dichot_sum")
+A_speed25_pos_sum <- subscale_sum(maps_scored, "A", "speed25_pos","A_speed25_pos_sum")
+A_speed_spec_pos_sum <- subscale_sum(maps_scored, "A", "speed_spec_pos","A_speed_spec_pos_sum")
+A_signs_pos_sum <- subscale_sum(maps_scored, "A", "signs_pos","A_signs_pos_sum")
+A_streetscape_pos_sum <- subscale_sum(maps_scored, "A", "streetscape_pos","A_streetscape_pos_sum")
+A_sidewalk_sum <- subscale_sum(maps_scored, "A", "sidewalk","A_sidewalk_sum")
+A_sidewalk_cont_sum <- subscale_sum(maps_scored, "A", "sidewalk_cont","A_sidewalk_cont_sum")
+A_sidewalk_width_sum <- subscale_sum(maps_scored, "A", "sidewalk_width","A_sidewalk_width_sum")
+A_sidewalk_pos_sum <- subscale_sum(maps_scored, "A", "sidewalk_pos","A_sidewalk_pos_sum")
+A_buffer_pos_sum <- subscale_sum(maps_scored, "A", "buffer_pos","A_buffer_pos_sum")
+A_bike_pos_sum <- subscale_sum(maps_scored, "A", "bike_pos","A_bike_pos_sum")
+A_trees_pos_sum <- subscale_sum(maps_scored, "A", "trees_pos","A_trees_pos_sum")
+A_awning_pos_sum <- subscale_sum(maps_scored, "A", "awning_pos","A_awning_pos_sum")
+A_shade_pos_sum <- subscale_sum(maps_scored, "A", "shade_pos","A_shade_pos_sum")
+A_overall_pos_sum <- subscale_sum(maps_scored, "A", "overall_pos","A_pos_sum")
+A_speed25_neg_sum <- subscale_sum(maps_scored, "A", "speed25_neg","A_speed25_neg_sum")
+A_driveways_neg_sum <- subscale_sum(maps_scored, "A", "driveways_neg","A_driveways_neg_sum")
+A_streetscape_neg_sum <- subscale_sum(maps_scored, "A", "streetscape_neg","A_streetscape_neg_sum")
+A_cont_neg_sum <- subscale_sum(maps_scored, "A", "cont_neg","A_cont_neg_sum")
+A_trip_neg_sum <- subscale_sum(maps_scored, "A", "trip_neg","A_trip_neg_sum")
+A_sidewalk_neg_sum <- subscale_sum(maps_scored, "A", "sidewalk_neg","A_sidewalk_neg_sum")
+A_aes_neg_sum <- subscale_sum(maps_scored, "A", "aes_neg","A_aes_neg_sum")
+A_overall_neg_sum <- subscale_sum(maps_scored, "A", "overall_neg","A_neg_sum")
+A_overall_sum <- subscale_sum(maps_scored, "A", "overall","A_overall_sum")
+
+# combine all school access segment sum data frames
+A_sums_all <- cbind(A_calming_pos_sum, 
+                 A_lights_pos_sum,
+                 A_driveways_pos_sum,
+                 A_speed_dichot_sum,
+                 A_speed25_pos_sum,
+                 A_speed_spec_pos_sum,
+                 A_signs_pos_sum,
+                 A_streetscape_pos_sum,
+                 A_sidewalk_sum,
+                 A_sidewalk_cont_sum,
+                 A_sidewalk_width_sum,
+                 A_sidewalk_pos_sum,
+                 A_buffer_pos_sum,
+                 A_bike_pos_sum,
+                 A_trees_pos_sum,
+                 A_awning_pos_sum,
+                 A_shade_pos_sum,
+                 A_overall_pos_sum,
+                 A_speed25_neg_sum,
+                 A_driveways_neg_sum,
+                 A_streetscape_neg_sum,
+                 A_cont_neg_sum,
+                 A_trip_neg_sum,
+                 A_sidewalk_neg_sum,
+                 A_aes_neg_sum,	
+                 A_overall_neg_sum,
+                 A_overall_sum)
+# filter for just the sum variables
+A_sums <- A_sums_all %>%
+  select(ends_with("sum"))
+```
+
+```{r SUMS - Scoring for segments}
+# segments subscale sums
+S_calming_pos_sum <- subscale_sum(maps_scored, "S", "calming_pos","S_calming_pos_sum")
+S_lights_pos_sum <- subscale_sum(maps_scored, "S", "lights_pos","S_lights_pos_sum")
+S_driveways_pos_sum <- subscale_sum(maps_scored, "S", "driveways_pos","S_driveways_pos_sum")
+S_speed_dichot_sum <- subscale_sum(maps_scored, "S", "speed_dichot","S_speed_dichot_sum")
+S_speed25_pos_sum <- subscale_sum(maps_scored, "S", "speed25_pos","S_speed25_pos_sum")
+S_speed_spec_pos_sum <- subscale_sum(maps_scored, "S", "speed_spec_pos","S_speed_spec_pos_sum")
+S_signs_pos_sum <- subscale_sum(maps_scored, "S", "signs_pos","S_signs_pos_sum")
+S_streetscape_pos_sum <- subscale_sum(maps_scored, "S", "streetscape_pos","S_streetscape_pos_sum")
+S_sidewalk_sum <- subscale_sum(maps_scored, "S", "sidewalk","S_sidewalk_sum")
+S_sidewalk_cont_sum <- subscale_sum(maps_scored, "S", "sidewalk_cont","S_sidewalk_cont_sum")
+S_sidewalk_width_sum <- subscale_sum(maps_scored, "S", "sidewalk_width","S_sidewalk_width_sum")
+S_sidewalk_pos_sum <- subscale_sum(maps_scored, "S", "sidewalk_pos","S_sidewalk_pos_sum")
+S_buffer_pos_sum <- subscale_sum(maps_scored, "S", "buffer_pos","S_buffer_pos_sum")
+S_bike_pos_sum <- subscale_sum(maps_scored, "S", "bike_pos","S_bike_pos_sum")
+S_trees_pos_sum <- subscale_sum(maps_scored, "S", "trees_pos","S_trees_pos_sum")
+S_awning_pos_sum <- subscale_sum(maps_scored, "S", "awning_pos","S_awning_pos_sum")
+S_shade_pos_sum <- subscale_sum(maps_scored, "S", "shade_pos","S_shade_pos_sum")
+S_overall_pos_sum <- subscale_sum(maps_scored, "S", "overall_pos","S_pos_sum")
+S_speed25_neg_sum <- subscale_sum(maps_scored, "S", "speed25_neg","S_speed25_neg_sum")
+S_driveways_neg_sum <- subscale_sum(maps_scored, "S", "driveways_neg","S_driveways_neg_sum")
+S_streetscape_neg_sum <- subscale_sum(maps_scored, "S", "streetscape_neg","S_streetscape_neg_sum")
+S_cont_neg_sum <- subscale_sum(maps_scored, "S", "cont_neg","S_cont_neg_sum")
+S_trip_neg_sum <- subscale_sum(maps_scored, "S", "trip_neg","S_trip_neg_sum")
+S_sidewalk_neg_sum <- subscale_sum(maps_scored, "S", "sidewalk_neg","S_sidewalk_neg_sum")
+S_aes_neg_sum <- subscale_sum(maps_scored, "S", "aes_neg","S_aes_neg_sum")
+S_overall_neg_sum <- subscale_sum(maps_scored, "S", "overall_neg","S_neg_sum")
+S_overall_sum <- subscale_sum(maps_scored, "S", "overall","S_overall_sum")
+
+# combine all segment sum data frames
+S_sums_all <- cbind(S_calming_pos_sum, 
+                 S_lights_pos_sum,
+                 S_driveways_pos_sum,
+                 S_speed_dichot_sum,
+                 S_speed25_pos_sum,
+                 S_speed_spec_pos_sum,
+                 S_signs_pos_sum,
+                 S_streetscape_pos_sum,
+                 S_sidewalk_sum,
+                 S_sidewalk_cont_sum,
+                 S_sidewalk_width_sum,
+                 S_sidewalk_pos_sum,
+                 S_buffer_pos_sum,
+                 S_bike_pos_sum,
+                 S_trees_pos_sum,
+                 S_awning_pos_sum,
+                 S_shade_pos_sum,
+                 S_overall_pos_sum,
+                 S_speed25_neg_sum,
+                 S_driveways_neg_sum,
+                 S_streetscape_neg_sum,
+                 S_cont_neg_sum,
+                 S_trip_neg_sum,
+                 S_sidewalk_neg_sum,
+                 S_aes_neg_sum,	
+                 S_overall_neg_sum,
+                 S_overall_sum)
+# filter for just the sum variables
+S_sums <- S_sums_all %>%
+  select(ends_with("sum"))
+```
+
+```{r SUMS - Scoring for crossings}
+# Crossing subscale sums
+C_amenities_pos_sum <- subscale_sum(maps_scored, "C", "amenities_pos","C_amenities_pos_sum")
+C_pre_curb_pos_sum <- subscale_sum(maps_scored, "C", "pre_curb_pos","C_pre_curb_pos_sum")
+C_post_curb_pos_sum <- subscale_sum(maps_scored, "C", "post_curb_pos","C_post_curb_pos_sum")
+C_curb_qual_pos_sum <- subscale_sum(maps_scored, "C", "curb_qual_pos","C_curb_qual_pos_sum")
+C_control_pos_sum <- subscale_sum(maps_scored, "C", "control_pos","C_control_pos_sum")
+C_overall_pos_sum <- subscale_sum(maps_scored, "C", "overall_pos","C_overall_pos_sum")
+C_width_sum <- subscale_sum(maps_scored, "C", "width","C_width_sum")
+C_pre_curb_neg_sum <- subscale_sum(maps_scored, "C", "pre_curb_neg","C_pre_curb_neg_sum")
+C_post_curb_neg_sum <- subscale_sum(maps_scored, "C", "post_curb_neg","C_post_curb_neg_sum")
+C_imped_sum <- subscale_sum(maps_scored, "C", "imped","C_imped_sum")
+C_overall_neg_sum <- subscale_sum(maps_scored, "C", "overall_neg","C_overall_neg_sum")
+C_overall_sum <- subscale_sum(maps_scored, "C", "overall","C_overall_sum")
+
+# combine all crossing sum data frames
+C_sums_all <- cbind(C_amenities_pos_sum,
+                     C_pre_curb_pos_sum,
+                     C_post_curb_pos_sum,
+                     C_curb_qual_pos_sum,
+                     C_control_pos_sum,
+                     C_overall_pos_sum,
+                     C_width_sum,
+                     C_pre_curb_neg_sum,
+                     C_post_curb_neg_sum,
+                     C_imped_sum,
+                     C_overall_neg_sum,
+                     C_overall_sum)
+
+# filter for just the sum variables
+C_sums <- C_sums_all %>%
+  select(ends_with("sum"))
+
+```
+
+```{r SUMS - Add sum scores back to main data frame and export data}
+#remove duplicate variables
+maps_sum_with_dup <- cbind(maps_scored, A_sums, S_sums, C_sums)
+maps_sum_unique <- maps_sum_with_dup[!duplicated(as.list(maps_sum_with_dup))]
+
+# combine with STREETS school info variables
+school_info <- maps %>%
+  select(qc, cohort, timepoint, schertz, arm)
+maps_final <- cbind(school_info, maps_sum_unique)
+
+write.csv(maps_final, "streets_maps.csv")
+```
+
 ```{r 11. Inter rater reliability analyses}
 # IRR data set up ------------------------------------------------------------
 maps_final$SchoolID <- gsub("_QC","",maps_final$SchoolID) #remove _QC from schoolid values
@@ -3021,25 +3204,25 @@ maps_qc <- maps_final %>% # Select only QC schools
   filter(qc == 1 | qc == 2)  
 
 # ICC for school access segments ---------------------------------------------
-a_overall_icc <- maps_qc %>%
+maps_qc %>%
   select(A_overall_mean, qc, SchoolID) %>% # select variable for ICC, plus qc and schoolid grouping variable
   pivot_wider(names_from = qc, values_from = A_overall_mean) %>% # make data wide
-  select("1","2") # remove schoolid
-icc(a_overall_icc, model = "oneway", type = "agreement")
+  select("1","2") %>% # remove schoolid
+  icc(model = "oneway", type = "agreement")
 
 # ICC for segments -----------------------------------------------------------
-s_overall_icc <- maps_qc %>%
+maps_qc %>%
   select(S_overall_mean, qc, SchoolID) %>%
   pivot_wider(names_from = qc, values_from = S_overall_mean) %>%
-  select("1","2")
-icc(s_overall_icc, model = "oneway", type = "agreement")
+  select("1","2") %>%
+  icc(model = "oneway", type = "agreement")
 
 # ICC for crossings ----------------------------------------------------------
-c_overall_icc <- maps_qc %>%
+maps_qc %>%
   select(C_overall_mean, qc, SchoolID) %>%
   pivot_wider(names_from = qc, values_from = C_overall_mean) %>%
-  select("1","2")
-icc(c_overall_icc, model = "oneway", type = "agreement")
+  select("1","2") %>%
+  icc(model = "oneway", type = "agreement")
 
 
 ```
