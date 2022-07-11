@@ -2974,12 +2974,12 @@ C_pre_curb_pos_mean <- subscale_mean(maps_scored, "C", "pre_curb_pos","C_pre_cur
 C_post_curb_pos_mean <- subscale_mean(maps_scored, "C", "post_curb_pos","C_post_curb_pos_mean")
 C_curb_qual_pos_mean <- subscale_mean(maps_scored, "C", "curb_qual_pos","C_curb_qual_pos_mean")
 C_control_pos_mean <- subscale_mean(maps_scored, "C", "control_pos","C_control_pos_mean")
-C_overall_pos_mean <- subscale_mean(maps_scored, "C", "overall_pos","C_overall_pos_mean")
+C_overall_pos_mean <- subscale_mean(maps_scored, "C", "overall_pos","C_pos_mean")
 C_width_mean <- subscale_mean(maps_scored, "C", "width","C_width_mean")
 C_pre_curb_neg_mean <- subscale_mean(maps_scored, "C", "pre_curb_neg","C_pre_curb_neg_mean")
 C_post_curb_neg_mean <- subscale_mean(maps_scored, "C", "post_curb_neg","C_post_curb_neg_mean")
 C_imped_mean <- subscale_mean(maps_scored, "C", "imped","C_imped_mean")
-C_overall_neg_mean <- subscale_mean(maps_scored, "C", "overall_neg","C_overall_neg_mean")
+C_overall_neg_mean <- subscale_mean(maps_scored, "C", "overall_neg","C_neg_mean")
 C_overall_mean <- subscale_mean(maps_scored, "C", "overall","C_overall_mean")
 
 # combine all crossing mean data frames
@@ -3009,9 +3009,9 @@ maps_unique <- maps_with_dup[!duplicated(as.list(maps_with_dup))]
 # combine with STREETS school info variables
 school_info <- maps %>%
   select(qc, cohort, timepoint, schertz, arm)
-maps_final <- cbind(school_info, maps_unique)
+maps_means <- cbind(school_info, maps_unique)
 
-write.csv(maps_final, "streets_maps.csv")
+write.csv(maps_means, "streets_maps_means.csv")
 ```
 
 ```{r SUMS - create function}
@@ -3192,15 +3192,15 @@ maps_sum_unique <- maps_sum_with_dup[!duplicated(as.list(maps_sum_with_dup))]
 # combine with STREETS school info variables
 school_info <- maps %>%
   select(qc, cohort, timepoint, schertz, arm)
-maps_final <- cbind(school_info, maps_sum_unique)
+maps_sums <- cbind(school_info, maps_sum_unique)
 
-write.csv(maps_final, "streets_maps.csv")
+write.csv(maps_sums, "streets_maps_sums.csv")
 ```
 
 ```{r 11. Inter rater reliability analyses}
 # IRR data set up ------------------------------------------------------------
-maps_final$SchoolID <- gsub("_QC","",maps_final$SchoolID) #remove _QC from schoolid values
-maps_qc <- maps_final %>% # Select only QC schools
+maps_means$SchoolID <- gsub("_QC","",maps_final$SchoolID) #remove _QC from schoolid values
+maps_qc <- maps_means %>% # Select only QC schools
   filter(qc == 1 | qc == 2)  
 
 # ICC for school access segments ---------------------------------------------
@@ -3228,9 +3228,16 @@ maps_qc %>%
 ```
 
 ```{r 12. Summary tables and data visualizations}
+# Summary table
+summary_table <- maps_means %>%
+  filter(timepoint == 1 & qc != 2 & cohort == 1) %>%
+  select(A_pos_mean, A_neg_mean, A_overall_mean, S_pos_mean, S_neg_mean, S_overall_mean, C_pos_mean, C_neg_mean, C_overall_mean)
+table_summary <- tbl_summary(summary_table)
+table_summary
+
 # Assess distributions of overall variables 
 # Select only overall scores and convert to long
-overall_values <- maps_final%>%
+overall_values <- maps_means%>%
   select("A_overall_mean", "S_overall_mean", "C_overall_mean")
 melt_overall <- melt(overall_values)
 
