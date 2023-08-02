@@ -7,5 +7,6 @@ This project contains scoring protocol for the MAPS-SRTS direct observation tool
 - Variable names for the raw data should match the variables in the data dictionary, located in the data/metadata folder.
 - This code is set up to handle up to 4 school access segments, 14 segments, and 10 crossings.
 - If your data set has less than these limits, please delete or add to the scoring code blocks for school access segment scoring, segment scoring, and crossing scoring to match the upper limit of these sections in your data.
+- The output of the code is the scored MAPS-SRTS data with subscales and the total MAPS score
  
 Questions about this code can be directed to [Dr. Leigh Ann Ganzar](mailto:leigh.a.ganzar@uth.tmc.edu). 
