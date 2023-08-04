@@ -10,4 +10,5 @@ This project contains scoring protocol for the MAPS-SRTS direct observation tool
 - The output of the code is the scored MAPS-SRTS data with subscales and the total MAPS score
  
 Questions about this code can be directed to [Dr. Leigh Ann Ganzar](mailto:leigh.a.ganzar@uth.tmc.edu). 
-!(https://zenodo.org/badge/673861713.svg)
+
+![doi image](https://zenodo.org/badge/673861713.svg)
